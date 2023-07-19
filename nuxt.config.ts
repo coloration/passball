@@ -1,5 +1,7 @@
 import { pwa } from './config/pwa'
 import { appDescription } from './constants/index'
+// import autoprefixer from 'autoprefixer'
+// import postcssNesting from 'postcss-nesting'
 
 export default defineNuxtConfig({
   modules: [
@@ -23,6 +25,12 @@ export default defineNuxtConfig({
     '@unocss/reset/tailwind.css',
   ],
 
+  postcss: {
+    plugins: [
+  //     autoprefixer({}), // add options if needed
+      // postcssNesting({}),
+    ]
+  },
   colorMode: {
     classSuffix: '',
   },

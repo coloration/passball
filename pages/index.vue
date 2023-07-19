@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { MatchView } from '../containers'
 const online = useOnline()
 </script>
 
@@ -6,10 +7,7 @@ const online = useOnline()
   <div>
     <Suspense>
       <ClientOnly>
-        <PageView v-if="online" />
-        <div v-else text-gray:80>
-          You're offline
-        </div>
+        <MatchView />
       </ClientOnly>
       <template #fallback>
         <div italic op50>
@@ -17,6 +15,5 @@ const online = useOnline()
         </div>
       </template>
     </Suspense>
-    <InputEntry />
   </div>
 </template>

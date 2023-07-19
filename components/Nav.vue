@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<{
               </template>
               百科
               <small>Wiki</small>
-              
+
             </NavTabButton>
           </NuxtLink>
           <NuxtLink to="/analysis">
@@ -67,6 +67,7 @@ const props = withDefaults(defineProps<{
 .p-nav {
   @apply bg-black text-white overflow-hidden;
 }
+
 .p-nav-container {
   @apply h-16 w-7xl;
 }
@@ -74,16 +75,17 @@ const props = withDefaults(defineProps<{
 .p-nav-tabbtn {
   @apply bg-blue-500 h-full;
 
-  &.active {
-    @apply bg-indigo-200;
-  }
+}
+
+.p-nav-tabbtn.active {
+  @apply bg-indigo-200;
 }
 
 .p-nav-tab {
   @apply relative z-2 h-full gap-6;
 
-  & a {
-    @apply h-full pt-4;
-  }
 }
-</style>
+
+.p-nav-tab a {
+  @apply h-full pt-4;
+}</style>

@@ -15,7 +15,6 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.39.8",
     "@iconify-json/carbon": "^1.1.18",
-    "@iconify-json/emojione": "^1.1.6",
     "@iconify-json/emojione-monotone": "^1.1.4",
     "@iconify-json/twemoji": "^1.1.11",
     "@nuxt/devtools": "^0.6.7",
@@ -25,10 +24,12 @@
     "@unocss/nuxt": "^0.53.5",
     "@vite-pwa/nuxt": "^0.1.0",
     "@vueuse/nuxt": "^10.2.1",
+    "autoprefixer": "^10.4.14",
     "consola": "^3.2.3",
     "eslint": "^8.45.0",
     "nuxt": "^3.6.3",
     "pinia": "^2.1.4",
+    "postcss-nesting": "^12.0.0",
     "typescript": "^5.1.6",
     "vue-tsc": "^1.8.5"
   }

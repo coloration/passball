@@ -1,0 +1,1 @@
+export { default as MatchView } from './match/MatchView.vue'

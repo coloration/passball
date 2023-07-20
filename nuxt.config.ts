@@ -69,4 +69,10 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
   },
+
+  runtimeConfig: {
+    MONGODB_URI: process.env.MONGODB_URI,
+    MONGODB_DATABASE: process.env.MONGODB_DATABASE,
+    MONGODB_COLLECTION: process.env.MONGODB_COLLECTION
+  }
 })

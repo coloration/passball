@@ -6,7 +6,7 @@ const { data } = await useFetch('/api/matches')
   <div class="match-tab">
     <!-- -->
     <FlexRow class="gap-4">
-      <div class="match-btn" v-for="(match, i) in data?.matches" :key="i">
+      <div class="match-btn" v-for="(match, i) in data?.body?.matches" :key="i">
         {{ match.name }}
       </div>
     </FlexRow>

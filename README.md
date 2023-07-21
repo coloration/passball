@@ -65,6 +65,8 @@
   - [x] 数据库连接问题
   - [x] 项目部署 passball.colorlives.com
   - [x] 定义数据结构
+
+- 0721(F)
   - [] 根据数据结构爬取22-23赛季英超数据
 
 
@@ -75,7 +77,7 @@
 ### TODO 
 
 
-
+- 看一下 puppter 的下载源
 - serverless 解决数据库连接问题 nextweek
 - postcss 插件不能用
 - logo 设计 midjourney discord 0721

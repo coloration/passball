@@ -1,0 +1,1 @@
+手动运行或github action 定时任务，不与nuxt共享环境变量

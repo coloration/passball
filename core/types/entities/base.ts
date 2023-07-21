@@ -10,6 +10,11 @@ export enum GoalKind {
 
 }
 
+export enum LeagueKind {
+  League = 1,
+  Cup = 2
+}
+
 export type Display = string
 export type Temperature = number
 export type Date = number

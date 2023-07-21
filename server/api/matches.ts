@@ -3,12 +3,9 @@ import { MongoClient } from 'mongodb'
 
 const { MONGODB_URI, MONGODB_DATABASE, MONGODB_COLLECTION  } = useRuntimeConfig()
 
-console.log(1)
 const mongoClient = new MongoClient(MONGODB_URI)
 
-console.log(2)
 const clientPromise = mongoClient.connect()
-console.log(3)
 
 
 export default defineEventHandler(async () => {

@@ -1,16 +1,24 @@
 <script lang="ts" setup>
-
+withDefaults(
+  defineProps<{
+    teamSeason: any
+  }>(),
+  {
+    teamSeason: () => ({})
+  }
+)
 </script>
 <template>
 
 <div class="score-row">
 
   <div class="sr-team-logo">
-    <img src="https://cdn.sportnanoapi.com/football/team/c4a6528a2ee147b99c9885ef24385a4e.png" />
+    <img :src="`https://media-1.api-sports.io/football/teams/${teamSeason.tm}.png`" />
   </div>
   <div class="sr-team-rank">
-    <div class="sr-record">3/1/1</div>
-    <div class="sr-score">12</div>
+    <div class="sr-record">
+      {{ teamSeason.hw + teamSeason.aw }}/{{ teamSeason.hd + teamSeason.ad }}/{{ teamSeason.hl + teamSeason.al }}</div>
+    <div class="sr-score">{{ teamSeason.pt }}</div>
   </div>
   <div class="sr-team-goals">
     <div class="sr-record">12/4</div>

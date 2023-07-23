@@ -1,22 +1,30 @@
 <script lang="ts" setup>
+const props = withDefaults(
+  defineProps<{
+    match: any
+  }>(),
+  {
+    match: () => ({} as any)
+  }
+)
 
 </script>
 <template>
 
 <div class="match-row">
 
-  <div class="match-date">May 19, 2023</div>
-  <div class="team-name">MCI</div>
+  <div class="match-date">{{ match.dt }}</div>
+  <div class="team-name">{{ match.h }}</div>
   <div class="team-logo">
-    <img src="https://cdn.sportnanoapi.com/football/team/c4a6528a2ee147b99c9885ef24385a4e.png" />
+    <img :src="`https://media-1.api-sports.io/football/teams/${match.h}.png`" />
   </div>
-  <div class="team-score">3</div>
+  <div class="team-score">{{ match.hg[0] }}</div>
   <div class="divide">:</div>
-  <div class="team-score">1</div>
+  <div class="team-score">{{ match.ag[0] }}</div>
   <div class="team-logo">
-    <img src="https://cdn.sportnanoapi.com/football/team/f5da8fc911a5ca139398448d6969da71.png" />
+    <img :src="`https://media-1.api-sports.io/football/teams/${match.a}.png`" />
   </div>
-  <div class="away-name">ROC</div>
+  <div class="away-name">{{ match.a }}</div>
   <div class="operators">
 
   </div>

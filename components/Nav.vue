@@ -1,14 +1,6 @@
 <script lang="ts" setup>
 const route = useRoute()
 
-const props = withDefaults(defineProps<{
-  current: string
-}>(), {
-  current: ''
-})
-
-
-
 </script>
 
 

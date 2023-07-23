@@ -1,13 +1,32 @@
 <script lang="ts" setup>
-const { data } = await useFetch('/api/matches')
+
+const props = withDefaults(defineProps<{
+  current: number
+  leagues: any[]
+}>(), {
+  leagues: () => [],
+  current: 0
+})
+
+
+const emits = defineEmits<{
+  (e: 'change', id: number) :void,
+}>()
+
+
 </script>
 
 <template>
   <div class="match-tab">
     <!-- -->
     <FlexRow class="gap-4">
-      <div class="match-btn" v-for="(match, i) in data?.body?.matches" :key="i">
-        {{ match.name }}
+      <div 
+        v-for="(league, i) in props.leagues"
+        :key="i"
+        class="match-btn"
+        :class="{ active: current === league.id }"
+        @click="emits('change', league.id)">
+        {{ league.name }}
       </div>
     </FlexRow>
   </div>
@@ -20,5 +39,9 @@ const { data } = await useFetch('/api/matches')
 
 .match-btn {
   @apply px-6 py-2 rounded-full bg-gray-300 cursor-pointer;
+}
+
+.match-btn.active {
+  @apply bg-red;
 }
 </style>

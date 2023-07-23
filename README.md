@@ -28,7 +28,7 @@
 
 - resource
   - <https://data.qtx.com/> 赛事，赛程，转会信息，积分榜，射手榜
-  
+  - <>
 - github action 定时任务爬取赛事，转会信息, 格式化，存储到monogodb
 - serverless 访问monogodb
 
@@ -67,7 +67,11 @@
   - [x] 定义数据结构
 
 - 0721(F)
-  - [] 根据数据结构爬取22-23赛季英超数据
+  - [x] 爬取22-23赛季五大联赛赛程积分数据
+
+
+
+
 
 
 
@@ -82,8 +86,10 @@
 - postcss 插件不能用
 - logo 设计 midjourney discord 0721
 - 网页设计
-- 五大联赛(4/5)22-23数据爬取
 - google广告贴片
+  需要网站先有流量 google adsence
+- 整理数据结构
+- 先加google analysis
 
 ### Roadmap
 
@@ -97,6 +103,3 @@
 
 
 
-### 小问题
-
-- 小程序修改字体：<https://developers.weixin.qq.com/community/develop/doc/000ac65c41c638baa1b6791e85a404>

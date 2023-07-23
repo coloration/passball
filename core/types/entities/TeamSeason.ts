@@ -2,7 +2,7 @@ import type { LeagueSeason } from './LeagueSeason'
 import type { League } from './League'
 import type { Team } from './Team'
 import type { Id, Score } from './base'
-import { Player } from './Player'
+import type { Player } from './Player'
 
 export interface TeamSeason {
   id: Id
@@ -10,9 +10,9 @@ export interface TeamSeason {
   lid: League['id']
   lsid: LeagueSeason['id']
   it?: Score
-  order?: Score
+  rk?: number
   pl: Player['id']
-  gl: Score
+  gl: number
   win: number
   lst: number
   tie: number

@@ -12,7 +12,11 @@ export enum GoalKind {
 
 export enum LeagueKind {
   League = 1,
-  Cup = 2
+  Cup = 2,
+}
+
+export enum MatchStatus {
+  Finished = 1,
 }
 
 export type Display = string
@@ -22,4 +26,3 @@ export type Score = number
 export type Id = string
 export type Latitude = number
 export type Longitude = number
-

@@ -5,6 +5,5 @@
     <div class="w-7xl mx-auto">
       <slot />
     </div>
-    <Footer />
   </main>
 </template>

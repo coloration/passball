@@ -1,18 +1,29 @@
 <script lang="ts" setup>
+withDefaults(
+  defineProps<{
+    round: number
+  }>(),
+  {
+    round: 1
+  }
+)
 
+const emits = defineEmits<{
+  (e: 'change', round: number) :void,
+}>()
 </script>
 <template>
   <ContentBoard class="league-round-board">
     <template #right-top>
-      up
+      <div @click="emits('change', -1)">prev</div>
     </template>
     <template #right-bottom>
-      down
+      <div @click="emits('change', 1)">next</div>
     </template>
     <div class="lrb-header">
       <div class="lrb-logo"></div>
       <div class="lrb-info">
-        <div>Round 1</div>
+        <div>Round {{ round }}</div>
         <div class="lrb-date">May 18 ~ May 24, 2023</div>
       </div>
     </div>

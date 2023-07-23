@@ -1,36 +1,22 @@
-import { Db, MongoClient, ServerApiVersion } from 'mongodb'
+import { MongoClient, ServerApiVersion } from 'mongodb'
 
+const { MONGODB_URI } = useRuntimeConfig()
 export class Database {
-  
   static #uniqueInstance: Database
-  static instance (uri: string) {
-    return Database.#uniqueInstance 
-      || (Database.#uniqueInstance = new Database(uri))
+  static get instance() {
+    return Database.#uniqueInstance
+      || (Database.#uniqueInstance = new Database())
   }
 
   client: MongoClient
 
-
-  constructor (uri: string) {
-    this.client = new MongoClient(uri, {
+  constructor() {
+    this.client = new MongoClient(MONGODB_URI, {
       serverApi: {
         version: ServerApiVersion.v1,
         strict: true,
         deprecationErrors: true,
-      }
+      },
     })
   }
-
-  async connect() {
-    
-    await this.client.close()
-    await this.client.connect()
-  }
-
-  async drop() {
-    await this.client.close()
-  }
 }
-
-
-

@@ -1,9 +1,17 @@
-import { League } from './League'
-import { LeagueSeason } from './LeagueSeason'
-import { Player } from './Player'
-import { TeamSeason } from './TeamSeason'
-import { Weather, Wind, Temperature, Date, Score, GoalKind, Id } from './base'
-
+import type { League } from './League'
+import type { LeagueSeason } from './LeagueSeason'
+import type { Player } from './Player'
+import type { TeamSeason } from './TeamSeason'
+import type {
+  Date,
+  GoalKind,
+  Id,
+  MatchStatus,
+  Score,
+  Temperature,
+  Weather,
+  Wind,
+} from './base'
 
 export interface Goal {
   pid: Player['id']
@@ -17,7 +25,8 @@ export interface Match {
   lid: League['id']
   lsid: LeagueSeason['id']
   d: Date
-  h: TeamSeason['id'] // home 
+  s: MatchStatus
+  h: TeamSeason['id'] // home
   a: TeamSeason['id'] // away
   hs: Score // home score
   as: Score // away score
@@ -27,5 +36,4 @@ export interface Match {
   hps: Player['id'][]
   aps: Player['id'][]
   gls: Goal[]
-  
 }

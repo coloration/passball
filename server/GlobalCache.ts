@@ -22,7 +22,7 @@ export class GlobalCache {
       const database = client.db(MONGODB_DATABASE)
       const collection = database.collection('static')
       const results = await collection.find({}).toArray()
-      await client.close()
+      
       this.staticContents = results
     }
 

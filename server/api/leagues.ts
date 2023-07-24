@@ -1,7 +1,5 @@
 import { Database } from '../../core/database'
 
-import { GlobalCache } from '../GlobalCache'
-
 const { MONGODB_DATABASE } = useRuntimeConfig()
 
 export default defineEventHandler(async () => {
@@ -10,17 +8,9 @@ export default defineEventHandler(async () => {
   try {
     await client.connect()
     const database = client.db(MONGODB_DATABASE)
-    const collection = database.collection('leagues')
-    const results = await collection.find({}).limit(10).toArray()
-    const leagueMap = (await GlobalCache.instance.getStaticContents())[0].data
+    const collection = database.collection('primary-leagues')
 
-    const leagues = results.map((item: any) => {
-      return {
-        id: item.id,
-        name: leagueMap[item.id],
-      }
-    })
-    return leagues
+    return await collection.find({}).limit(10).toArray()
   }
   catch (e: any) {
     return { statusCode: 500, body: e.toString() }

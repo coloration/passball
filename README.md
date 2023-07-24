@@ -69,7 +69,15 @@
 - 0721(F)
   - [x] 爬取22-23赛季五大联赛赛程积分数据
 
+- 0722(S)
+  - [x] 新建项目负责数据爬取，整理，存储 @coloration/passball-schedule
 
+- 0723(S)
+  - [x] 整理五大联赛过去五年赛程数据，存储数据库
+  - [x] nuxt调用数据库并返给前端
+
+- 0724(M)
+  - [x] 联赛基本信息，赛季筛选
 
 
 
@@ -83,13 +91,17 @@
 
 - 看一下 puppter 的下载源
 - serverless 解决数据库连接问题 nextweek
-- postcss 插件不能用
+- nuxt3 使用 postcss 插件(不能用)
 - logo 设计 midjourney discord 0721
 - 网页设计
 - google广告贴片
   需要网站先有流量 google adsence
 - 整理数据结构
 - 先加google analysis
+- how to ssr
+  - 名称要不要映射
+- netlify 二级域名 https
+
 
 ### Roadmap
 

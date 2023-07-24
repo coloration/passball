@@ -1,19 +1,34 @@
 <script lang="ts" setup>
-
 const props = withDefaults(defineProps<{
-  current: number
-  leagues: any[]
+  currentLeague: number
+  currentSeason: number
+  leagues?: any[]
 }>(), {
   leagues: () => [],
-  current: 0
+  currentLeague: 0,
+  currentSeason: 0,
 })
 
 
+const lgs = computed(() => props.leagues || [])
+
+const lg = computed(() => props.leagues?.find(lg => lg.lg === props.currentLeague))
+
+
 const emits = defineEmits<{
-  (e: 'change', id: number) :void,
+  (e: 'change', lg: number, sn: number) :void,
 }>()
 
+function handleChange(lg: number, sn?: number) {
+  if (!sn) sn = props.currentSeason
 
+  if (lg === props.currentLeague) {
+    if (sn === props.currentSeason) return
+    return emits('change', lg, sn!)
+  }
+
+  emits('change', lg, sn!)
+}
 </script>
 
 <template>
@@ -21,14 +36,20 @@ const emits = defineEmits<{
     <!-- -->
     <FlexRow class="gap-4">
       <div 
-        v-for="(league, i) in props.leagues"
+        v-for="(league, i) in lgs"
         :key="i"
         class="match-btn"
-        :class="{ active: current === league.id }"
-        @click="emits('change', league.id)">
-        {{ league.name }}
+        :class="{ active: currentLeague === league.lg }"
+        @click="handleChange(league.lg)">
+        {{ league.n }}
       </div>
     </FlexRow>
+
+    <select 
+      v-if="lg"
+      @change="(e: any) => handleChange(currentLeague, Number(e.target.value))">
+      <option v-for="sn in lg.seasons" :key="sn.sn" :value="sn.sn">{{ sn.dsp }}</option>
+    </select>
   </div>
 </template>
 

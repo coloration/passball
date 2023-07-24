@@ -15,45 +15,42 @@ const currentRound = ref<number>(1)
 const matches = ref<any[]>([])
 
 
-const current = ref(0)
+const currentLeague = ref(0)
+const currentSeason = ref(0)
+
+// useAsyncData()
+
+const { data: leagues } = await useAsyncData('leagues', () => $fetch('/api/leagues'))
 
 
-const { data: leagues } = await useFetch('/api/leagues')
+watch(() => leagues.value, () => {
+  const lgs = leagues.value as any
+  
+  if (lgs.length > 0) {
+    currentLeague.value = lgs[0].lg
+    if (lgs[0].seasons.length > 0) {
+      
+      currentSeason.value = lgs[0].seasons[0].sn
+    }
 
-
-watch(() => leagues.value?.length, () => {
-  if (leagues.value?.length > 0) {
-    current.value = leagues.value[0]?.id
-    handleLeagueChange(current.value)
+    handleLeagueChange(currentLeague.value, currentSeason.value)
   }
 })
 
 
-// onMounted(() => {
-  
-//     .then(({ data }) => {
-//       console.log(data.value)
-      
-//       leagues.value = data.value
 
-//       if (leagues.value?.length > 0) {
-//         current.value = leagues.value[0]?.id
-//         handleLeagueChange(current.value)
-//       }
-//     })
-// })
 
-function handleLeagueChange(id: number) {
-  current.value = id
-  useFetch(`/api/league-season?league=${id}&season=2022`)
+function handleLeagueChange(league: number, season: number) {
+  currentLeague.value = league
+  currentSeason.value = season
+  useFetch(`/api/league-season?league=${league}&season=${season}`)
     .then(({ data: seasonData }) => {
-      console.log('sss', seasonData.value)
-      standings.value = (seasonData.value as any).standings
+      standings.value = (seasonData.value as any)?.standings || []
     })
 
-  useFetch(`/api/league-match?league=${id}&season=2022`)
+  useFetch(`/api/league-match?league=${league}&season=${season}`)
     .then(({ data: matchData }) => {
-      matches.value = (matchData.value as any).matches
+      matches.value = (matchData.value as any)?.matches || []
     })
   currentRound.value = 1
 }
@@ -74,7 +71,12 @@ function handleRoundChange(offset: number) {
 <template>
   <div class="match-view">
 
-    <MatchTab :leagues="leagues" :current="current" @change="handleLeagueChange" />
+    <MatchTab
+      :leagues="(leagues as any)"
+      :currentLeague="currentLeague"
+      :currentSeason="currentSeason"
+      @change="handleLeagueChange"
+    />
 
     <FlexRow class="gap-6" vertical="start">
 

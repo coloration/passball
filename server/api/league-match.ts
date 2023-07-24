@@ -17,7 +17,6 @@ export default defineEventHandler(async (event) => {
       sn: Number(season)
     })
 
-    console.log('@@@@@@@@@', results)
     // const leagueMap = (await GlobalCache.instance.getStaticContents())[0].data
 
  

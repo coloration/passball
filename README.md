@@ -79,10 +79,48 @@
 - 0724(M)
   - [x] 联赛基本信息，赛季筛选
 
+- 0725(M)
+  - [x] 五大联赛2023 賽程, 積分榜
+
+
+- 0726(T)
+  - [x] 杯賽數據
+
+- next day
+
+  - [] 最近一周比赛 fixture from to, league,round, home, away, time, date, address, status, score, github action. 赛事名次 半小时一更新
+  - [] 联赛转会信息
+  - [] 联赛射手榜
+  - [] 積分榜被動查詢
+  - [] 賽程被動查詢
 
 
 
+### 比賽狀態
 
+https://www.api-football.com/documentation-v3#tag/Fixtures/operation/get-fixtures
+
+
+### 
+
+重要賽事
+
+五大聯賽，歐洲杯，世界杯，女足世界杯, 歐洲冠軍聯賽
+
+[
+  1, // World Cup
+  2, // UEFA Champions League
+  3, // UEFA Europa League
+  7, // Asian Cup
+  8, // World Cup - Women
+  480, // Olympics Men
+  524, // Olympics Women
+  39, // Premier League
+  61, // Ligue 1
+  78, // Bundesliga
+  135, // Serie A
+  140, // Laliga
+]
 
 2023.07.31 内测
 
@@ -101,7 +139,8 @@
 - how to ssr
   - 名称要不要映射
 - netlify 二级域名 https
-
+- 翻译数据
+- 焦點戰賽事速看
 
 ### Roadmap
 
@@ -112,6 +151,5 @@
 - 转会信息
 - 竞猜积分
 - 用户登录
-
 
 

@@ -18,9 +18,9 @@ const props = withDefaults(
   <div class="team-logo">
     <img :src="`https://media-1.api-sports.io/football/teams/${match.h}.png`" />
   </div>
-  <div class="team-score">{{ match.hg[0] }}</div>
+  <div class="team-score">{{ match.hg?.[0] }}</div>
   <div class="divide">:</div>
-  <div class="team-score">{{ match.ag[0] }}</div>
+  <div class="team-score">{{ match.ag?.[0] }}</div>
   <div class="team-logo">
     <img :src="`https://media-1.api-sports.io/football/teams/${match.a}.png`" />
   </div>

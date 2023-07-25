@@ -41,6 +41,7 @@ function handleChange(lg: number, sn?: number) {
         class="match-btn"
         :class="{ active: currentLeague === league.lg }"
         @click="handleChange(league.lg)">
+        <div class="logo" :style="{ backgroundImage: `url(https://media.api-sports.io/football/leagues/${league.lg}.png)` }"></div>
         {{ league.n }}
       </div>
     </FlexRow>
@@ -59,8 +60,14 @@ function handleChange(lg: number, sn?: number) {
 }
 
 .match-btn {
-  @apply px-6 py-2 rounded-full bg-gray-300 cursor-pointer;
+  @apply flex items-center gap-2 pl-2 pr-6 py-2 rounded-full bg-gray-300 cursor-pointer;
 }
+
+.match-btn .logo {
+  @apply w-10 h-10 bg-white rounded-full overflow-hidden bg-contain bg-no-repeat bg-center;
+}
+
+
 
 .match-btn.active {
   @apply bg-red;

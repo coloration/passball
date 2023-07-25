@@ -5,7 +5,7 @@ import LeagueScoreBoard from './LeagueScoreBoard.vue'
 
 import MatchRow from './MatchRow.vue'
 import ScoreRow from './ScoreRow.vue'
-
+import NearlyMatch from './NearlyMatch.vue'
 
 
 
@@ -70,7 +70,8 @@ function handleRoundChange(offset: number) {
 </script>
 <template>
   <div class="match-view">
-
+    <NearlyMatch />
+    
     <MatchTab
       :leagues="(leagues as any)"
       :currentLeague="currentLeague"

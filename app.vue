@@ -9,19 +9,29 @@ useHead({
 <template>
   <VitePwaManifest />
   <NuxtLayout>
+    
     <NuxtPage />
   </NuxtLayout>
 </template>
 
-<style>
+<style lang="postcss">
 html, body , #__nuxt{
   height: 100vh;
   margin: 0;
   padding: 0;
+  /* @apply inter; */
+
+  
+
+
+}
+
+html {
+  background: #1D1A2D;
 }
 
 html.dark {
-  background: #222;
+  background: #1D1A2D;
   color: white;
 }
 </style>

@@ -17,17 +17,17 @@ export const pwa: ModuleOptions = {
     theme_color: '#ffffff',
     icons: [
       {
-        src: 'pwa-192x192.png',
+        src: 'passball-pwa-192_192.png',
         sizes: '192x192',
         type: 'image/png',
       },
       {
-        src: 'pwa-512x512.png',
+        src: 'passball-pwa-512_512.png',
         sizes: '512x512',
         type: 'image/png',
       },
       {
-        src: 'maskable-icon.png',
+        src: 'passball-pwa-512_512.png',
         sizes: '512x512',
         type: 'image/png',
         purpose: 'any maskable',

@@ -1,2 +1,2 @@
-export const appName = 'Vitesse for Nuxt 3'
-export const appDescription = 'Vitesse for Nuxt 3'
+export const appName = 'Passball'
+export const appDescription = 'Football league information platform, 足球赛事赛程资讯平台'

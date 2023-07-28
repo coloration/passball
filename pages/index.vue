@@ -6,9 +6,15 @@ const online = useOnline()
 
 <template>
   <div>
+    
     <Suspense>
       <ClientOnly>
         <MatchView />
+
+
+
+
+
       </ClientOnly>
       <template #fallback>
         <div italic op50>
@@ -18,3 +24,4 @@ const online = useOnline()
     </Suspense>
   </div>
 </template>
+<style></style>

@@ -8,9 +8,14 @@ const route = useRoute()
   <div class="p-nav">
     <FlexRow horizontal="center" class="w-full">
       <FlexRow class="p-nav-container">
-        <NuxtLink to="/" class="p-logo mr-12 text-4xl pointer" i-emojione-monotone:dashing-away />
+        <NuxtLink
+          to="/" 
+          class="p-logo mr-12 text-4xl pointer"
+        >
+          <img src="/logo.png" alt="">
+        </NuxtLink>
         <!-- -->
-        <FlexRow class="p-nav-tab">
+        <!-- <FlexRow class="p-nav-tab">
           <NuxtLink to="/" class="">
             <NavTabButton :active="route.path === '/'">
               <template #icon>
@@ -48,7 +53,7 @@ const route = useRoute()
               <small>Mine</small>
             </NavTabButton>
           </NuxtLink>
-        </FlexRow>
+        </FlexRow> -->
 
       </FlexRow>
     </FlexRow>
@@ -57,27 +62,15 @@ const route = useRoute()
 
 <style lang="postcss">
 .p-nav {
-  @apply bg-black text-white overflow-hidden;
+
+  @apply bg-violet bg-opacity-10 h-20 relative z-1;
 }
 
 .p-nav-container {
-  @apply h-16 w-7xl;
+  @apply w-full max-w-7xl;
 }
 
-.p-nav-tabbtn {
-  @apply bg-blue-500 h-full;
-
+.p-logo img {
+  @apply h-20;
 }
-
-.p-nav-tabbtn.active {
-  @apply bg-indigo-200;
-}
-
-.p-nav-tab {
-  @apply relative z-2 h-full gap-6;
-
-}
-
-.p-nav-tab a {
-  @apply h-full pt-4;
-}</style>
+</style>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const props = withDefaults(
   defineProps<{
-    date: string
+    date?: string
     active?: boolean
   }>(),
   {

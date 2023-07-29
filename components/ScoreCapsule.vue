@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 const props = withDefaults(
   defineProps<{
-    gradientStart: string,
-    gradientEnd: string
+    gradientStart?: string,
+    gradientEnd?: string
   }>(),
   {
     gradientStart: '#B9C2C1',
@@ -40,7 +40,7 @@ const props = withDefaults(
 }
 
 .score-capsule-main {
-  @apply text-sm rounded-full min-w-10 h-full flex items-center justify-center;
+  @apply text-sm text-shadow rounded-full min-w-10 h-full flex items-center justify-center;
 }
 
 .score-capsule-aside {

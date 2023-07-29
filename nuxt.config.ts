@@ -11,8 +11,8 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@vite-pwa/nuxt',
   ],
-
-  experimental: {
+  // @ts-ignore
+  experimental: { 
     // when using generate, payload js assets included in sw precache manifest
     // but missing on offline, disabling extraction it until fixed
     payloadExtraction: false,
@@ -61,7 +61,12 @@ export default defineNuxtConfig({
         { name: 'description', content: appDescription },
         { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
       ],
+      script: [
+        { src: 'https://www.googletagmanager.com/gtag/js?id=G-C29PG89RVC', async: true },
+        { src: '/js/analysis.js' },
+      ]
     },
+  
   },
 
   pwa,

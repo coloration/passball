@@ -8,6 +8,8 @@ import LeagueRoundBoard from './LeagueRoundBoard.vue'
 import LeagueScoreBoard from './LeagueScoreBoard.vue'
 
 import MatchRow from './MatchRow.vue'
+import MatchItem from './MatchItem.vue'
+import ScoreItem from './ScoreItem.vue'
 import ScoreRow from './ScoreRow.vue'
 import NearlyMatch from './NearlyMatch.vue'
 
@@ -26,7 +28,7 @@ const currentSeason = ref(0)
 
 const { data: leagues } = await useAsyncData('leagues', () => $fetch('/api/leagues'))
 
-const lg = computed(() => leagues?.value.find(lg => lg.lg === currentLeague.value))
+const lg = computed(() => leagues.value?.find(lg => lg.lg === currentLeague.value))
 
 
 watch(() => leagues.value, () => {
@@ -116,9 +118,10 @@ function handleRoundChange(offset: number) {
                 <div>
                   <!-- <GlassSelect :options="lg.seasons"></GlassSelect>
                    -->
-                   <select 
+                  <select 
                     class="bg-transparent outline-0 font-700 cursor-pointer"
                     v-if="lg"
+                    :value="currentSeason"
                     @change="(e: any) => handleLeagueChange(currentLeague, Number(e.target.value))">
                     <option class="bg-indigo-900 font-inter font-700" v-for="sn in lg.seasons" :key="sn.sn" :value="sn.sn">{{ sn.dsp }}</option>
                   </select>
@@ -126,12 +129,12 @@ function handleRoundChange(offset: number) {
                 <div class="opacity-70 font-700">23 May. ~ 4 Jun. 2023</div>
               </div>
               <div class="flex gap-4">
-                <div class="uppercase font-700 text-xl">{{ 'round 1' }}</div>
+                <div class="uppercase font-700 text-xl">{{ currentRound }}</div>
                 <div class="flex gap-2">
-                  <GlassButton>
+                  <GlassButton @click="handleRoundChange(-1)">
                     <div i-carbon-caret-up></div>
                   </GlassButton>
-                  <GlassButton>
+                  <GlassButton @click="handleRoundChange(1)">
                     <div i-carbon-caret-down></div>
                   </GlassButton>
                 </div>
@@ -139,80 +142,37 @@ function handleRoundChange(offset: number) {
             </div>
 
 
-            <div
-              v-for="i in 10"
-              :key="i"
-              class="match-item flex py-2 border-b border-gray-600">
-              <div class="flex flex-col flex-1 gap-3">
-                <div class="team flex items-center">
-                  <TeamName :id="50" class="w-40">Manchester City</TeamName>
-                  <div class="text-xl font-700 w-4 text-center mr-4">3</div>
-                  <NearlyFive content="WWWDL" />
-                </div>
-                <div class="team flex items-center">
-                  <TeamName :id="42" class="w-40">Arsenal</TeamName>
-                  <div class="text-xl font-700 w-4 text-center mr-4">1</div>
-                  <NearlyFive content="WWLLW" />
-                </div>
-              </div>
-              <div class="match-info flex flex-col justify-between items-end text-xs text-gray-400">
-                 <div class="font-700 text-base text-white">FT</div>
-                 <div>Edihate, Manchester</div>
-                 <div>23 Aug Wendesday 17:00 PM </div>
-              </div>
-            </div>
-             
+            <MatchItem
+              v-for="(match, i) in currentRoundMatches"
+              :key="i" :match="match" />
 
           </RoundBoard>
         </div>
         <RoundBoard class="min-h-100 px-10 py-8"
           gradient="linear-gradient(206deg, rgba(78, 39, 189, 0.64) 0%, rgba(241, 10, 149, 0.30) 100%)">
           
-          <div class="uppercase font-700 text-2xl mb-4">game rank</div>
+          <div class="flex justify-between">
+            <div class="uppercase font-700 text-2xl mb-4">game rank</div>
+            <select 
+              class="bg-transparent outline-0 font-700 cursor-pointer"
+              :value="currentSeason"
+              v-if="lg"
+              @change="(e: any) => handleLeagueChange(currentLeague, Number(e.target.value))">
+              <option class="bg-indigo-900 font-inter font-700" v-for="sn in lg.seasons" :key="sn.sn" :value="sn.sn">{{ sn.dsp }}</option>
+            </select>
+          </div>
           <div class="flex font-700 text-lg mb-3">
             <div w-10>No.</div>
             <div w-47>Team</div>
             <div w-20>Score</div>
             <div w-25>Win</div>
-            <div w-22>Draw</div>
-            <div w-53>Lose</div>
+            <div w-25>Draw</div>
+            <div w-60>Lose</div>
             <div>Goals</div>
           </div>
           <div class="flex flex-col gap-3">
-            <div v-for="i in 20" :key="i" class="h-8 items-center flex">
-              <RankNumber :order="i" class="mr-4" />
-
-              <TeamName class="w-44 mr-4" :id="50">Manchester City2222</TeamName>
-
-              <div class="mr-14 font-700 text-lg w-6 text-center">88</div>
-
-              <ScoreCapsule class="mr-4" gradient-start="#58EDD2" gradient-end="#2A927F">
-                <template #default>28</template>
-                <template #aside>16/12</template>
-              </ScoreCapsule>
-              <ScoreCapsule class="mr-4" gradient-start="#9884B8" gradient-end="#6D5E85">
-                <template #default>5</template>
-                <template #aside>3/2</template>
-              </ScoreCapsule>
-
-              <ScoreCapsule class="mr-4" gradient-start="#FF4D77" gradient-end="#AC2646">
-                <template #default>5</template>
-                <template #aside>0/5</template>
-              </ScoreCapsule>
-
-
-              <NearlyFive class="mr-12" :content="'WWWDL'" />
-
-
-              <ScoreCapsule class="mr-5" gradient-start="#EDCC58" gradient-end="#B49443">
-                <template #default>94</template>
-                <template #aside>66/28</template>
-              </ScoreCapsule>
-              <ScoreCapsule>
-                <template #default>33</template>
-                <template #aside>16/17</template>
-              </ScoreCapsule>
-            </div>
+            <ScoreItem :teamSeason="teamSeason" v-for="(teamSeason, i) in standings" :key="i" />
+      
           </div>
 
         </RoundBoard>
@@ -295,27 +255,6 @@ function handleRoundChange(offset: number) {
           </div>
         </RoundBoard>
       </div>
-
-
-
-
-      <NearlyMatch />
-
-      <MatchTab :leagues="(leagues as any)" :currentLeague="currentLeague" :currentSeason="currentSeason"
-        @change="handleLeagueChange" />
-
-      <FlexRow class="gap-6" vertical="start">
-
-        <LeagueRoundBoard :round="currentRound" class="flex-1" @change="handleRoundChange">
-
-          <MatchRow :match="match" v-for="(match, i) in currentRoundMatches" :key="i" />
-        </LeagueRoundBoard>
-
-        <LeagueScoreBoard class="flex-1">
-          <ScoreRow :teamSeason="teamSeason" v-for="(teamSeason, i) in standings" :key="i" />
-        </LeagueScoreBoard>
-
-      </FlexRow>
     </div>
   </div>
 </template>

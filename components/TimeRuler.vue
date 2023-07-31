@@ -2,9 +2,11 @@
 const props = withDefaults(
   defineProps<{
     timezone?: number
+    isToday: boolean
   }>(),
   {
-    timezone: 0
+    timezone: 0,
+    isToday: true
   }
 )
 
@@ -21,12 +23,16 @@ onMounted(() => {
   timer = window.setTimeout(updateMask, 30 * 1000)
 })
 
+onBeforeUnmount(() => {
+  clearTimeout(timer)
+})
+
 </script>
 
 <template>
   <div class="time-ruler">
     <!-- -->
-    <div class="clock-mask" :style="{ left: leftOffset }"></div>
+    <div v-if="isToday" class="clock-mask" :style="{ left: leftOffset }"></div>
     <div class="h-full relative z-2 flex flex-col">
       <div class="flex border-b-2">
         <div class="clock">

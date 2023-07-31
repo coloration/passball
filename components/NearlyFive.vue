@@ -8,7 +8,7 @@ const props = withDefaults(
   }
 )
 
-const arr = computed(() => props.content.split(''))
+const arr = computed(() => props.content?.split('') || [])
 </script>
 
 <template>
@@ -20,7 +20,7 @@ const arr = computed(() => props.content.split(''))
 
 <style lang="postcss">
 .nearly-five {
-  @apply flex items-center overflow-hidden gap-1;
+  @apply flex items-center overflow-hidden gap-1 w-23;
 }
 
 .nearly-five-dot {

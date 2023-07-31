@@ -1,11 +1,19 @@
 <script lang="ts" setup>
-const props = withDefaults(
+const dbl = (n: number) => n > 9 ? `${n}` : `0${n}`
+const weekdayMap = { 1: 'M', 2: 'T', 3: 'M', 4: 'T', 5: 'F', 6: 'S', 0: 'S' }
+const weekly = (w: number) => weekdayMap[w as keyof typeof weekdayMap] || '' 
+
+withDefaults(
   defineProps<{
-    date?: string
+    month?: number
+    date?: number
+    day?: number
     active?: boolean
   }>(),
   {
-    date: '',
+    month: 1,
+    date: 1,
+    day: 1,
     active: false
   }
 )
@@ -14,10 +22,10 @@ const props = withDefaults(
 <template>
   <div class="week-button" :class="{ active }">
     <!-- -->
-    <div class="month">07</div>
+    <div class="month">{{ dbl(month) }}</div>
     <div class="divider">/</div>
-    <div class="date">25</div>
-    <div class="weekday">T</div>
+    <div class="date">{{ dbl(date) }}</div>
+    <div class="weekday">{{ weekly(day) }}</div>
   </div>
 </template>
 

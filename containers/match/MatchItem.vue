@@ -14,19 +14,19 @@ const dateFormatted = useTime(props.match.dt * 1000, 'D MMM dddd HH:mm A')
   <div class="match-item" v-if="match.dt">
     <div class="flex flex-col flex-1 gap-3">
       <div class="team flex items-center">
-        <TeamName :id="match.h" class="w-40">{{ match.h }}?</TeamName>
+        <TeamName :id="match.h" class="w-40">{{ match.hn }}</TeamName>
         <div class="text-xl font-700 w-4 text-center mr-4">{{ match.hg?.[0] }}</div>
-        <NearlyFive content="WWWDL" />?
+        <NearlyFive :content="match.hfm" />
       </div>
       <div class="team flex items-center">
-        <TeamName :id="match.a" class="w-40">{{ match.a }}?</TeamName>
+        <TeamName :id="match.a" class="w-40">{{ match.an }}</TeamName>
         <div class="text-xl font-700 w-4 text-center mr-4">{{ match.ag?.[0] }}</div>
-        <NearlyFive content="WWLLW" />?
+        <NearlyFive :content="match.afm" />
       </div>
     </div>
     <div class="match-info flex flex-col justify-between items-end text-xs text-gray-400">
       <div class="font-700 text-base text-white">{{ match.st }}</div>
-      <div>{{ match.ve || '-' }}?, {{ match.city || '-' }}?</div>
+      <div>{{ match.ve || '-' }}, {{ match.city || '-' }}</div>
       <div>{{ dateFormatted }}</div>
     </div>
   </div>

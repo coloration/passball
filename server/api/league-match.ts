@@ -1,12 +1,10 @@
 import { Database } from '../../core/database'
 
-import { GlobalCache } from '../GlobalCache'
-
 const { MONGODB_DATABASE } = useRuntimeConfig()
 
 export default defineEventHandler(async (event) => {
   const client = await Database.instance.client
-  
+
   const { season, league } = getQuery(event)
   try {
     await client.connect()

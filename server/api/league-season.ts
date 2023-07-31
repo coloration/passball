@@ -4,8 +4,9 @@ const { MONGODB_DATABASE } = useRuntimeConfig()
 
 export default defineEventHandler(async (event) => {
   const client = await Database.instance.client
-  
+  console.log('a')
   const { season, league } = getQuery(event)
+  console.log('b', season, league)
   try {
     await client.connect()
     const database = client.db(MONGODB_DATABASE)

@@ -1,22 +1,13 @@
 <script lang="ts" setup>
 import MatchCalender from './MatchCalender.vue'
 
-
-
-import MatchTab from './MatchTab.vue'
-import LeagueRoundBoard from './LeagueRoundBoard.vue'
-import LeagueScoreBoard from './LeagueScoreBoard.vue'
-
-import MatchRow from './MatchRow.vue'
 import MatchItem from './MatchItem.vue'
 import ScoreItem from './ScoreItem.vue'
-import ScoreRow from './ScoreRow.vue'
-import NearlyMatch from './NearlyMatch.vue'
-
-
 
 
 const standings = ref<any[]>([])
+const scorers = ref<any[]>([])
+const assists = ref<any[]>([])
 const currentRound = ref<number>(1)
 const matches = ref<any[]>([])
 
@@ -52,8 +43,11 @@ function handleLeagueChange(league: number, season: number) {
   currentLeague.value = league
   currentSeason.value = season
   useFetch(`/api/league-season?league=${league}&season=${season}`)
-    .then(({ data: seasonData }) => {
-      standings.value = (seasonData.value as any)?.standings || []
+    .then(({ data }) => {
+      const leagueSeason: any = data.value
+      standings.value = leagueSeason.standings || []
+      scorers.value = leagueSeason.scorers || []
+      assists.value = leagueSeason.assists || []
     })
 
   useFetch(`/api/league-match?league=${league}&season=${season}`)
@@ -181,35 +175,35 @@ function handleRoundChange(offset: number) {
           <div class="flex items-stretch h-full">
             <div class="flex-1 h-full flex flex-col gap-3 px-10 py-8 border-r border-dashed border-gray-400">
               <div class="text-right text-2xl font-700 mb-4 uppercase">TOP SCORERS</div>
-              <div class="top-player flex w-full" v-for="i in 10" :key="i">
-                <RankNumber :order="i" class="mr-4 h-8" />
+              <div class="top-player flex w-full" v-for="(sc, i) in scorers" :key="i">
+                <RankNumber :order="i + 1" class="mr-4 h-8" />
                 <div class="flex flex-col flex-1 gap-2">
                   <div class="flex justify-between">
                     <div class="flex items-center">
                       <div class="rounded-full overflow-hidden mr-4">
-                        <img class="w-8 h-8" :src="`https://media-1.api-sports.io/football/players/${1100}.png`" alt="">
+                        <img class="w-8 h-8" :src="`https://media-1.api-sports.io/football/players/${sc.id}.png`" alt="">
                       </div>
-                      <div>E. Haaland</div>
+                      <div>{{ sc.n }}</div>
                     </div>
                     <div class="flex gap-2">
-                      <div>country</div>
+                      <div>{{ sc.nt }}</div>
                       <div class="border-2 border-white overflow-hidden rounded-full">
-                        <img class="w-7 h-7" :src="`https://media-1.api-sports.io/football/teams/${50}.png`" />
+                        <img class="w-7 h-7" :src="`https://media-1.api-sports.io/football/teams/${sc.tm}.png`" />
                       </div>
                     </div>
                   </div>
                   <div class="flex justify-between">
                     <ScoreCapsule gradient-start="#EDCC58" gradient-end="#B49443">
-                      <template #default>36</template>
-                      <template #aside>60/107</template>
+                      <template #default>{{ sc.gl }}</template>
+                      <template #aside>{{ sc.sto }}/{{ sc.st }}</template>
                     </ScoreCapsule>
                     <ScoreCapsule gradient-start="#E26B45" gradient-end="#A53F1E">
-                      <template #default>7</template>
-                      <template #aside>0/7</template>
+                      <template #default>{{ sc.pts }}</template>
+                      <template #aside>{{ sc.ptm }}/{{ sc.pts + sc.ptm }}</template>
                     </ScoreCapsule>
                     <ScoreCapsule gradient-start="#AB58ED" gradient-end="#732AAC">
-                      <template #default>35</template>
-                      <template #aside>33/2779'</template>
+                      <template #default>{{ sc.app }}</template>
+                      <template #aside>{{ sc.lp }}/{{ sc.mi }}'</template>
                     </ScoreCapsule>
                   </div>
                 </div>
@@ -217,35 +211,35 @@ function handleRoundChange(offset: number) {
             </div>
             <div class="flex-1 h-full flex flex-col gap-3 px-10 py-8">
               <div class="text-2xl font-700 mb-4 uppercase">TOP Asissits</div>
-              <div class="top-player flex w-full" v-for="i in 10" :key="i">
-                <RankNumber :order="i" class="mr-4 h-8" />
+              <div class="top-player flex w-full" v-for="(as, i) in assists" :key="i">
+                <RankNumber :order="i + 1" class="mr-4 h-8" />
                 <div class="flex flex-col flex-1 gap-2">
                   <div class="flex justify-between">
                     <div class="flex items-center">
                       <div class="rounded-full overflow-hidden mr-4">
-                        <img class="w-8 h-8" :src="`https://media-1.api-sports.io/football/players/${1100}.png`" alt="">
+                        <img class="w-8 h-8" :src="`https://media-1.api-sports.io/football/players/${as.id}.png`" alt="">
                       </div>
-                      <div>E. Haaland</div>
+                      <div>{{ as.n }}</div>
                     </div>
                     <div class="flex gap-2">
-                      <div>country</div>
+                      <div>{{ as.nt }}</div>
                       <div class="border-2 border-white overflow-hidden rounded-full">
-                        <img class="w-7 h-7" :src="`https://media-1.api-sports.io/football/teams/${50}.png`" />
+                        <img class="w-7 h-7" :src="`https://media-1.api-sports.io/football/teams/${as.tm}.png`" />
                       </div>
                     </div>
                   </div>
                   <div class="flex justify-between">
-                    <ScoreCapsule gradient-start="#EDCC58" gradient-end="#B49443">
-                      <template #default>36</template>
-                      <template #aside>60/107</template>
+                    <ScoreCapsule gradient-start="#269FF6" gradient-end="#285B81">
+                      <template #default>{{ as.as }}</template>
+                      <template #aside>{{ as.pk }}/{{ as.ac }}%</template>
                     </ScoreCapsule>
-                    <ScoreCapsule gradient-start="#E26B45" gradient-end="#A53F1E">
-                      <template #default>7</template>
-                      <template #aside>0/7</template>
+                    <ScoreCapsule gradient-start="#EDCC58" gradient-end="#B49443">
+                      <template #default>{{ as.gl }}</template>
+                      <template #aside>{{ as.sto }}/{{ as.st }}</template>
                     </ScoreCapsule>
                     <ScoreCapsule gradient-start="#AB58ED" gradient-end="#732AAC">
-                      <template #default>35</template>
-                      <template #aside>33/2779'</template>
+                      <template #default>{{ as.app }}</template>
+                      <template #aside>{{ as.lp }}/{{ as.mi }}'</template>
                     </ScoreCapsule>
                   </div>
                 </div>

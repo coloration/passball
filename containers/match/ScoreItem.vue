@@ -13,7 +13,7 @@ const t = computed(() => props.teamSeason)
 <template>
   <div class="h-8 items-center flex">
     <RankNumber :order="t.rk" class="mr-4" />
-    <TeamName class="w-44 mr-4" :id="t.tm">{{ t.tm }}</TeamName>
+    <TeamName class="w-44 mr-4" :id="t.tm">{{ t.n }}</TeamName>
 
     <div class="mr-14 font-700 text-lg w-6 text-center">{{ t.pt }}</div>
 
@@ -32,7 +32,7 @@ const t = computed(() => props.teamSeason)
     </ScoreCapsule>
 
 
-    ??<NearlyFive class="mr-12" :content="'WWWDL'" />
+    <NearlyFive class="mr-12" :content="t.fm" />
 
 
     <ScoreCapsule class="mr-5 w-24" gradient-start="#EDCC58" gradient-end="#B49443">

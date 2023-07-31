@@ -5,15 +5,23 @@ import MatchItem from './MatchItem.vue'
 import ScoreItem from './ScoreItem.vue'
 
 
+interface SeasonMatch {
+  lg: number
+  sn: number
+  rounds: any[]
+}
+
 const standings = ref<any[]>([])
 const scorers = ref<any[]>([])
 const assists = ref<any[]>([])
-const currentRound = ref<number>(1)
-const matches = ref<any[]>([])
+const seasonMatches = ref<SeasonMatch>({
+  lg: 0, sn: 0, rounds: []
+})
 
 
 const currentLeague = ref(0)
 const currentSeason = ref(0)
+const currentRoundIndex = ref(0)
 
 // useAsyncData()
 
@@ -52,20 +60,18 @@ function handleLeagueChange(league: number, season: number) {
 
   useFetch(`/api/league-match?league=${league}&season=${season}`)
     .then(({ data: matchData }) => {
-      matches.value = (matchData.value as any)?.matches || []
+      console.log(matchData)
+      seasonMatches.value = (matchData.value as any) || []
     })
-  currentRound.value = 1
+ 
 }
 
-const currentRoundMatches = computed(() => matches.value.filter(m => {
-  return m.rd === currentRound.value
-}))
 
 function handleRoundChange(offset: number) {
-  let changed = currentRound.value + offset
+  let changed = currentRoundIndex.value + offset
   if (changed < 0) changed = 0
   if (changed > 20000) changed = 20000
-  currentRound.value = changed
+  currentRoundIndex.value = changed
 }
 
 // const { data: leagueSeason } = await useFetch(`/api/league-season?league=${}&season=${}`)
@@ -123,7 +129,7 @@ function handleRoundChange(offset: number) {
                 <div class="opacity-70 font-700">23 May. ~ 4 Jun. 2023</div>
               </div>
               <div class="flex gap-4">
-                <div class="uppercase font-700 text-xl">{{ currentRound }}</div>
+                <div class="uppercase font-700 text-xl">{{ seasonMatches?.rounds?.[currentRoundIndex]?.round }}</div>
                 <div class="flex gap-2">
                   <GlassButton @click="handleRoundChange(-1)">
                     <div i-carbon-caret-up></div>
@@ -137,8 +143,8 @@ function handleRoundChange(offset: number) {
 
 
             <MatchItem
-              v-for="(match, i) in currentRoundMatches"
-              :key="i" :match="match" />
+              v-for="(fixture, i) in seasonMatches?.rounds?.[currentRoundIndex]?.fixtures"
+              :key="i" :match="fixture" />
 
           </RoundBoard>
         </div>

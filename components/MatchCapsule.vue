@@ -43,7 +43,7 @@ const offset = computed(() => {
           {{ match.rd }}
         </div>
         <div class="whitespace-nowrap">
-          {{ dateFormatted }}  
+          {{ dateFormatted }} {{ props.match.dt }}
         </div>
       </div>
     </div>

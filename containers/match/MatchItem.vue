@@ -1,32 +1,35 @@
 <script lang="ts" setup>
+import day from 'dayjs'
 const props = withDefaults(
   defineProps<{
-    match: any
+    match: any,
+    kind: 0 | 1
   }>(),
   {
-    match: () => ({} as any)
+    match: () => ({} as any),
+    kind: 0
   }
 )
 
-const dateFormatted = useTime(props.match.dt * 1000, 'D MMM dddd HH:mm A')
+const dateFormatted = computed(() => props.match.dt ? day(props.match.dt).format('D MMM. dddd HH:mm A') : '')
 </script>
 <template>
   <div class="match-item" v-if="match.dt">
     <div class="flex flex-col flex-1 gap-3">
       <div class="team flex items-center">
-        <TeamName :id="match.h" class="w-40">{{ match.hn }}</TeamName>
+        <TeamName :id="match.h" class="w-60">{{ match.hn }}</TeamName>
         <div class="text-xl font-700 w-4 text-center mr-4">{{ match.hg?.[0] }}</div>
-        <NearlyFive :content="match.hfm" />
+        <NearlyFive v-if="kind === 0" :content="match.hfm || ''" />
       </div>
       <div class="team flex items-center">
-        <TeamName :id="match.a" class="w-40">{{ match.an }}</TeamName>
+        <TeamName :id="match.a" class="w-60">{{ match.an }}</TeamName>
         <div class="text-xl font-700 w-4 text-center mr-4">{{ match.ag?.[0] }}</div>
-        <NearlyFive :content="match.afm" />
+        <NearlyFive v-if="kind === 0" :content="match.afm || ''" />
       </div>
     </div>
     <div class="match-info flex flex-col justify-between items-end text-xs text-gray-400">
       <div class="font-700 text-base text-white">{{ match.st }}</div>
-      <div>{{ match.ve || '-' }}, {{ match.city || '-' }}</div>
+      <div>{{ match.ve || '-' }}, {{ match.ct || '-' }}</div>
       <div>{{ dateFormatted }}</div>
     </div>
   </div>

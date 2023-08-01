@@ -3,7 +3,9 @@ import MatchCalender from './MatchCalender.vue'
 
 import MatchItem from './MatchItem.vue'
 import ScoreItem from './ScoreItem.vue'
-
+import TopAssists from './TopAssists.vue';
+import TopScorers from './TopScorers.vue';
+import day from 'dayjs'
 
 interface SeasonMatch {
   lg: number
@@ -19,16 +21,20 @@ const seasonMatches = ref<SeasonMatch>({
 })
 
 
+
+
 const currentLeague = ref(0)
 const currentSeason = ref(0)
 const currentRoundIndex = ref(0)
 
 // useAsyncData()
 
-const { data: leagues } = await useAsyncData('leagues', () => $fetch('/api/leagues'))
+const { data: leagues } : { data: any } = await useAsyncData('leagues', () => $fetch('/api/leagues'))
 
 const lg = computed(() => leagues.value?.find(lg => lg.lg === currentLeague.value))
 
+const typeLeagues = computed(() => (leagues.value || []).filter((lg: any) => lg.k === 0))
+const typeCups = computed(() => (leagues.value || []).filter((lg: any) => lg.k === 1))
 
 watch(() => leagues.value, () => {
   const lgs = leagues.value as any
@@ -47,18 +53,29 @@ watch(() => leagues.value, () => {
 
 
 
-function handleLeagueChange(league: number, season: number) {
+function handleLeagueChange(league: number, season?: number) {
   currentLeague.value = league
-  currentSeason.value = season
-  useFetch(`/api/league-season?league=${league}&season=${season}`)
-    .then(({ data }) => {
-      const leagueSeason: any = data.value
-      standings.value = leagueSeason.standings || []
-      scorers.value = leagueSeason.scorers || []
-      assists.value = leagueSeason.assists || []
-    })
 
-  useFetch(`/api/league-match?league=${league}&season=${season}`)
+  currentSeason.value = season || lg.value.seasons[0].sn
+
+  currentRoundIndex.value = 0
+
+  if (lg.value.k === 0) {
+    useFetch(`/api/league-season?league=${league}&season=${currentSeason.value}`)
+      .then(({ data }) => {
+        const leagueSeason: any = data.value
+        standings.value = leagueSeason.standings || []
+        scorers.value = leagueSeason.scorers || []
+        assists.value = leagueSeason.assists || []
+      })
+  }
+  else {
+    standings.value = []
+    scorers.value = []
+    assists.value = []
+  }
+
+  useFetch(`/api/league-match?league=${league}&season=${currentSeason.value}`)
     .then(({ data: matchData }) => {
       console.log(matchData)
       seasonMatches.value = (matchData.value as any) || []
@@ -93,21 +110,28 @@ function handleRoundChange(offset: number) {
             <div class="uppercase font-700 text-lg px-4 py-4">POPULAR LEAGUE</div>
             <div class="flex flex-col gap-2">
               <LeagueButton
-                v-for="(league) in leagues" 
+                v-for="(league) in typeLeagues" 
+               
                 :key="league.lg"
                 :id="league.lg"
                 :active="currentLeague === league.lg"
-                @click="() => handleLeagueChange(league.lg, currentSeason)"
+                @click="() => handleLeagueChange(league.lg)"
               >{{ league.n }}</LeagueButton>
             </div>
 
-            <div class="uppercase font-700 text-lg px-4 py-4">POPULAR CUP</div>
-            <LeagueButton
-                :key="8"
-                :id="8"
-                :active="currentLeague === 8"
-                @click="() => handleLeagueChange(8, currentSeason)"
-              >{{ 'World Cup Women' }}</LeagueButton>
+            <div class="uppercase font-700 text-lg px-4 pt-10 pb-4">POPULAR CUP</div>
+            <div class="flex flex-col gap-2">
+              <LeagueButton
+                v-for="(league) in typeCups" 
+                class="text-base"
+                :key="league.lg"
+                :id="league.lg"
+                :active="currentLeague === league.lg"
+                @click="() => handleLeagueChange(league.lg)"
+              >
+              <div class="text-sm">{{ league.n }}</div>
+            </LeagueButton>
+            </div>
           </RoundBoard>
 
           <RoundBoard class="flex-1 min-h-100 px-10 py-8"
@@ -126,7 +150,10 @@ function handleRoundChange(offset: number) {
                     <option class="bg-indigo-900 font-inter font-700" v-for="sn in lg.seasons" :key="sn.sn" :value="sn.sn">{{ sn.dsp }}</option>
                   </select>
                 </div>
-                <div class="opacity-70 font-700">23 May. ~ 4 Jun. 2023</div>
+                <div class="opacity-70 font-700">
+                  {{  seasonMatches?.rounds?.[currentRoundIndex]?.beg ? day(seasonMatches?.rounds?.[currentRoundIndex]?.beg).format('D MMM.') : '' }} 
+                  {{  seasonMatches?.rounds?.[currentRoundIndex]?.end ? '~ ' + day(seasonMatches?.rounds?.[currentRoundIndex]?.end).format('D MMM. YYYY') : '' }}
+                </div>
               </div>
               <div class="flex gap-4">
                 <div class="uppercase font-700 text-xl">{{ seasonMatches?.rounds?.[currentRoundIndex]?.round }}</div>
@@ -144,11 +171,11 @@ function handleRoundChange(offset: number) {
 
             <MatchItem
               v-for="(fixture, i) in seasonMatches?.rounds?.[currentRoundIndex]?.fixtures"
-              :key="i" :match="fixture" />
+              :key="i" :match="fixture" :kind="lg?.k" />
 
           </RoundBoard>
         </div>
-        <RoundBoard class="min-h-100 px-10 py-8"
+        <RoundBoard v-if="lg?.k === 0" class="min-h-100 px-10 py-8"
           gradient="linear-gradient(206deg, rgba(78, 39, 189, 0.64) 0%, rgba(241, 10, 149, 0.30) 100%)">
           
           <div class="flex justify-between">
@@ -172,85 +199,14 @@ function handleRoundChange(offset: number) {
           </div>
           <div class="flex flex-col gap-3">
             <ScoreItem :teamSeason="teamSeason" v-for="(teamSeason, i) in standings" :key="i" />
-      
           </div>
 
         </RoundBoard>
-        <RoundBoard class="min-h-100"
+        <RoundBoard
           gradient="radial-gradient(88.73% 81.48% at 53.23% 56.43%, rgba(49, 156, 255, 0.48) 0%, rgba(49, 156, 255, 0.30) 38.02%, rgba(49, 156, 255, 0.01) 100%)">
-          <div class="flex items-stretch h-full">
-            <div class="flex-1 h-full flex flex-col gap-3 px-10 py-8 border-r border-dashed border-gray-400">
-              <div class="text-right text-2xl font-700 mb-4 uppercase">TOP SCORERS</div>
-              <div class="top-player flex w-full" v-for="(sc, i) in scorers" :key="i">
-                <RankNumber :order="i + 1" class="mr-4 h-8" />
-                <div class="flex flex-col flex-1 gap-2">
-                  <div class="flex justify-between">
-                    <div class="flex items-center">
-                      <div class="rounded-full overflow-hidden mr-4">
-                        <img class="w-8 h-8" :src="`https://media-1.api-sports.io/football/players/${sc.id}.png`" alt="">
-                      </div>
-                      <div>{{ sc.n }}</div>
-                    </div>
-                    <div class="flex gap-2">
-                      <div>{{ sc.nt }}</div>
-                      <div class="border-2 border-white overflow-hidden rounded-full">
-                        <img class="w-7 h-7" :src="`https://media-1.api-sports.io/football/teams/${sc.tm}.png`" />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="flex justify-between">
-                    <ScoreCapsule gradient-start="#EDCC58" gradient-end="#B49443">
-                      <template #default>{{ sc.gl }}</template>
-                      <template #aside>{{ sc.sto }}/{{ sc.st }}</template>
-                    </ScoreCapsule>
-                    <ScoreCapsule gradient-start="#E26B45" gradient-end="#A53F1E">
-                      <template #default>{{ sc.pts }}</template>
-                      <template #aside>{{ sc.ptm }}/{{ sc.pts + sc.ptm }}</template>
-                    </ScoreCapsule>
-                    <ScoreCapsule gradient-start="#AB58ED" gradient-end="#732AAC">
-                      <template #default>{{ sc.app }}</template>
-                      <template #aside>{{ sc.lp }}/{{ sc.mi }}'</template>
-                    </ScoreCapsule>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="flex-1 h-full flex flex-col gap-3 px-10 py-8">
-              <div class="text-2xl font-700 mb-4 uppercase">TOP Asissits</div>
-              <div class="top-player flex w-full" v-for="(as, i) in assists" :key="i">
-                <RankNumber :order="i + 1" class="mr-4 h-8" />
-                <div class="flex flex-col flex-1 gap-2">
-                  <div class="flex justify-between">
-                    <div class="flex items-center">
-                      <div class="rounded-full overflow-hidden mr-4">
-                        <img class="w-8 h-8" :src="`https://media-1.api-sports.io/football/players/${as.id}.png`" alt="">
-                      </div>
-                      <div>{{ as.n }}</div>
-                    </div>
-                    <div class="flex gap-2">
-                      <div>{{ as.nt }}</div>
-                      <div class="border-2 border-white overflow-hidden rounded-full">
-                        <img class="w-7 h-7" :src="`https://media-1.api-sports.io/football/teams/${as.tm}.png`" />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="flex justify-between">
-                    <ScoreCapsule gradient-start="#269FF6" gradient-end="#285B81">
-                      <template #default>{{ as.as }}</template>
-                      <template #aside>{{ as.pk }}/{{ as.ac }}%</template>
-                    </ScoreCapsule>
-                    <ScoreCapsule gradient-start="#EDCC58" gradient-end="#B49443">
-                      <template #default>{{ as.gl }}</template>
-                      <template #aside>{{ as.sto }}/{{ as.st }}</template>
-                    </ScoreCapsule>
-                    <ScoreCapsule gradient-start="#AB58ED" gradient-end="#732AAC">
-                      <template #default>{{ as.app }}</template>
-                      <template #aside>{{ as.lp }}/{{ as.mi }}'</template>
-                    </ScoreCapsule>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="flex items-stretch min-h-100">
+            <TopScorers :players="scorers"/>
+            <TopAssists :players="assists" />
     
           </div>
         </RoundBoard>

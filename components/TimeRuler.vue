@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+const dbl = (n: number) => n > 9 ? `${n}` : `0${n}`
 const props = withDefaults(
   defineProps<{
     timezone?: number
@@ -11,10 +12,17 @@ const props = withDefaults(
 )
 
 const leftOffset = ref('0%')
+const timezoneOffset = new Date().getTimezoneOffset()
+
+const localHalfClock = Array.from({ length: 60 }).map((_, i) => i * 30).map((utcDayMinute) => {
+  return (utcDayMinute - timezoneOffset) % (24 * 60)
+})
+
+
 let timer: number = 0
 function updateMask() {
   const d = new Date()
-  const h = d.getHours()
+  const h = d.getUTCHours() + d.getUTCMinutes() / 60
   leftOffset.value = `${(h / 30 * 100).toFixed(2)}%`
 }
 
@@ -27,6 +35,12 @@ onBeforeUnmount(() => {
   clearTimeout(timer)
 })
 
+function formatTimeStr(localMinute: number) {
+  const localHour = (Math.floor(localMinute / 60) + 24) % 24 
+  const localRestMin = localMinute % 60
+  return `${dbl(Math.abs(localHour))}:${dbl(localRestMin)}`
+}
+
 </script>
 
 <template>
@@ -34,38 +48,10 @@ onBeforeUnmount(() => {
     <!-- -->
     <div v-if="isToday" class="clock-mask" :style="{ left: leftOffset }"></div>
     <div class="h-full relative z-2 flex flex-col">
-      <div class="flex border-b-2">
-        <div class="clock">
-          <div class="clock-text">0:00</div>
-          <div class="clock-ruler">
-            <div class="clock-divider" :class="{ bold: i === 1 }" v-for="i in 6" :key="i"></div>
-          </div>
+      <div class="flex border-b-2 pt-6">
+        <div class="clock-divider" v-for="i in localHalfClock" :key="i" :class="{ bold: i % 360 === 0 }">
+          <div class="absolute -top-6 -left-1 font-700 whitespace-nowrap" v-if="i % 360 === 0">{{ formatTimeStr(i) }}</div>
         </div>
-        <div class="clock">
-          <div class="clock-text">6:00</div>
-          <div class="clock-ruler">
-            <div class="clock-divider" :class="{ bold: i === 1 }" v-for="i in 6" :key="i"></div>
-          </div>
-        </div>
-        <div class="clock">
-          <div class="clock-text">12:00</div>
-          <div class="clock-ruler">
-            <div class="clock-divider" :class="{ bold: i === 1 }" v-for="i in 6" :key="i"></div>
-          </div>
-        </div>
-        <div class="clock">
-          <div class="clock-text">18:00</div>
-          <div class="clock-ruler">
-            <div class="clock-divider" :class="{ bold: i === 1 }" v-for="i in 6" :key="i"></div>
-          </div>
-        </div>
-        <div class="clock">
-          <div class="clock-text">24:00 + 1</div>
-          <div class="clock-ruler">
-            <div class="clock-divider" :class="{ bold: i === 1 }" v-for="i in 6" :key="i"></div>
-          </div>
-        </div>
-
       </div>
       <div class="slot-content">
         <slot>
@@ -87,20 +73,8 @@ onBeforeUnmount(() => {
 
 }
 
-.time-ruler .clock {
-  @apply flex-1 flex flex-col gap-1;
-}
-
-.time-ruler .clock-text {
-  @apply font-700;
-}
-
-.time-ruler .clock-ruler {
-  @apply flex items-end;
-}
-
 .time-ruler .clock-divider {
-  @apply h-1 border-l-2 flex-1 opacity-70;
+  @apply h-1 border-l-2 flex-1 opacity-70 relative;
 }
 
 .time-ruler .clock-divider.bold {
@@ -108,6 +82,6 @@ onBeforeUnmount(() => {
 }
 
 .time-ruler .slot-content {
-  @apply flex-1 pt-2;
+  @apply flex-1 pt-2 h-100 overflow-auto;
 }
 </style>

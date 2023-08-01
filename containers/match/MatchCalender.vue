@@ -61,8 +61,9 @@ async function changeDay(tab: DateTab) {
 
     <TimeRuler :is-today="current === todayStr">
         <div class="h-full flex flex-col gap-2">
-          <template v-for="league in leagues">
-            <MatchCapsule v-for="match in league.matches" :match="match" />
+          <template v-for="(league, type) in leagues">
+            <div class="font-700 text-xl">{{ league.leagueName }}</div>
+            <MatchCapsule v-for="match in league.matches" :match="match" :type="type" />
           </template>
         </div>
     </TimeRuler>

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 
+dayjs.extend(utc)
 
 interface DateTab {
   month: number, 
@@ -10,10 +12,15 @@ interface DateTab {
   str: string
 }
 
-const today = dayjs().startOf('D')
+  
+
+const today = dayjs.utc().startOf('D')
+const localToday = dayjs.utc().local().startOf('D')
 const todayStr = today.format('YYYY-MM-DD')
+
+// 在坐標軸中體現offset 所以此處用local作為日期tab
 const dateTabs: DateTab[] = [-3, -2, -1, 0, 1, 2, 3].map((offset: number) => {
-  const d = today.add(offset, 'd')
+  const d = localToday.add(offset, 'd')
   return {
     month: d.get('M') + 1,
     date: d.get('D'),
@@ -62,7 +69,10 @@ async function changeDay(tab: DateTab) {
     <TimeRuler :is-today="current === todayStr">
         <div class="h-full flex flex-col gap-2">
           <template v-for="(league, type) in leagues">
-            <div class="font-700 text-xl">{{ league.leagueName }}</div>
+            <div class="font-700 text-xl">
+              <span v-if="league.country && league.country.toLowerCase() !== 'world'">{{ league.country }} - </span>
+              {{ league.leagueName }}
+            </div>
             <MatchCapsule v-for="match in league.matches" :match="match" :type="type" />
           </template>
         </div>

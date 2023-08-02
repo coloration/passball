@@ -7,6 +7,8 @@ withDefaults(
     players: () => []
   }
 )
+
+
 </script>
 
 <template>
@@ -21,10 +23,12 @@ withDefaults(
               <div class="rounded-full overflow-hidden mr-4">
                 <img class="w-8 h-8" :src="`https://media-1.api-sports.io/football/players/${sc.id}.png`" alt="">
               </div>
-              <div>{{ sc.n }}</div>
+              <div class="font-700">{{ sc.n }}</div>
             </div>
-            <div class="flex gap-2">
-              <div>{{ sc.nt }}</div>
+            <div class="flex gap-2 items-center">
+              <div class="flex font-500">
+                {{ sc.nt }}
+              </div>
               <div class="border-2 border-white overflow-hidden rounded-full">
                 <img class="w-7 h-7" :src="`https://media-1.api-sports.io/football/teams/${sc.tm}.png`" />
               </div>
@@ -47,7 +51,7 @@ withDefaults(
         </div>
       </div>
     </div>
-    <div class="uppercase font-700 text-lg flex-1 flex items-center justify-center">No CONTENT.</div>
+    <div v-else class="uppercase font-700 text-lg flex-1 flex items-center justify-center">No CONTENT.</div>
   </div>
 </template>
 

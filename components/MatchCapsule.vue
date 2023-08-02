@@ -12,7 +12,7 @@ const props = withDefaults(
 )
 const expand = ref(false)
 
-const dateFormatted = computed(() => day(props.match.dt).format('HH:mm A'))
+const dateFormatted = computed(() => day(props.match.dt).format('D MMM. HH:mm A '))
 const offset = computed(() => {
   if (!props.match.dt) return '0%'
 

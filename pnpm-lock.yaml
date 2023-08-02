@@ -14,9 +14,6 @@ devDependencies:
   '@iconify-json/emojione-monotone':
     specifier: ^1.1.4
     version: 1.1.4
-  '@iconify-json/twemoji':
-    specifier: ^1.1.11
-    version: 1.1.11
   '@nuxt/devtools':
     specifier: ^0.6.7
     version: 0.6.7(nuxt@3.6.3)(rollup@2.79.1)(vite@4.4.4)
@@ -1914,12 +1911,6 @@ packages:
 
   /@iconify-json/emojione-monotone@1.1.4:
     resolution: {integrity: sha512-NM5oxoebPGZt1Vh46peEgfNUbREZ2mHdlC1fwtdO9+qTaWQlOzIHH4D1aHA7HIIO4v/BIqr08BNufXUNcUT3jg==}
-    dependencies:
-      '@iconify/types': 2.0.0
-    dev: true
-
-  /@iconify-json/twemoji@1.1.11:
-    resolution: {integrity: sha512-ZA2v2AGWPC0rxiZDLqsVD+DoYB3n5Ft5q0YYAsy9QyYvoNWSdh6Vxe5d3yUP4mSpNkE4YW96RAjiZu72uXb7kQ==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: true

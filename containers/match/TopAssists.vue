@@ -21,10 +21,10 @@ withDefaults(
               <div class="rounded-full overflow-hidden mr-4">
                 <img class="w-8 h-8" :src="`https://media-1.api-sports.io/football/players/${as.id}.png`" alt="">
               </div>
-              <div>{{ as.n }}</div>
+              <div class="font-700">{{ as.n }}</div>
             </div>
             <div class="flex gap-2">
-              <div>{{ as.nt }}</div>
+              <div class="flex font-500">{{ as.nt }}</div>
               <div class="border-2 border-white overflow-hidden rounded-full">
                 <img class="w-7 h-7" :src="`https://media-1.api-sports.io/football/teams/${as.tm}.png`" />
               </div>
@@ -47,7 +47,7 @@ withDefaults(
         </div>
       </div>
     </div>
-    <div class="uppercase font-700 text-lg flex-1 flex items-center justify-center">No CONTENT.</div>
+    <div v-else class="uppercase font-700 text-lg flex-1 flex items-center justify-center">No CONTENT.</div>
   </div>
 </template>
 

@@ -82,6 +82,6 @@ function formatTimeStr(localMinute: number) {
 }
 
 .time-ruler .slot-content {
-  @apply flex-1 pt-2 h-100 overflow-auto;
+  @apply flex-1 pt-2 h-100;
 }
 </style>

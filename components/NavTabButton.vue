@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<{
         <slot name="icon"></slot>
       </FlexRow>
 
-      <div>
+      <div class="nav-tab-text">
         <slot></slot>
       </div>
     </FlexRow>
@@ -25,38 +25,28 @@ const props = withDefaults(defineProps<{
 
 <style lang="postcss">
 .p-nav-tab-button {
-  @apply h-full pl-2 pr-4;
+  @apply relative h-20 px-4 font-700 text-2xl;
 
-
-
+  
 }
 
-.p-nav-tab-button.active {
-  @apply bg-white text-black relative;
-  border-radius: 1.5rem 1.5rem 0 0;
+.nav-tab-text {
+  @apply relative bg-clip-text;
+  background-image: linear-gradient(153deg, #DEC5FF 0%, #FFDFFE 100%);
+  -webkit-text-fill-color: transparent;
 }
 
-.p-nav-tab-button.active:before,
-.p-nav-tab-button.active:after {
-  @apply absolute w-5 h-5 bottom-0;
+
+.active .nav-tab-text {
+  background-image: linear-gradient(158deg, #CFF6FF 40.28%, #FEFFFE 100%);
+  
+}
+
+.active .nav-tab-text::after {
+  @apply absolute bottom-0 left-0 right-0 h-2px;
+  background-image: linear-gradient(158deg, #CFF6FF 40.28%, #FEFFFE 100%);
   content: "";
+  
 }
 
-.p-nav-tab-button.active:before {
-  @apply -left-5;
-  box-shadow: 1rem 1rem 0 1rem #fff;
-  border-radius: 0 0 1rem 0;
-}
-
-.p-nav-tab-button.active:after {
-  @apply -right-5;
-
-  box-shadow: -1rem 1rem 0 1rem #fff;
-  border-radius: 0 0 0 1rem;
-}
-
-
-.p-nav-tab-button .icon {
-  @apply w-8 h-8 rounded-full overflow-hidden bg-black text-white mr-2;
-}
 </style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { MatchView } from '../containers'
+import { LeagueView } from '../../containers'
 
-const online = useOnline()
+
 </script>
 
 <template>
@@ -9,7 +9,7 @@ const online = useOnline()
     
     <Suspense>
       <ClientOnly>
-        <MatchView />
+        <LeagueView />
       </ClientOnly>
       <template #fallback>
         <div italic op50>

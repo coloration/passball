@@ -15,36 +15,23 @@ const route = useRoute()
           <img src="/logo.png" alt="">
         </NuxtLink>
         <!-- -->
-        <!-- <FlexRow class="p-nav-tab">
+        <FlexRow class="p-nav-tab">
           <NuxtLink to="/" class="">
             <NavTabButton :active="route.path === '/'">
-              <template #icon>
-                <div i-emojione-monotone:soccer-ball></div>
-              </template>
-              赛事
-              <small>Match</small>
+              Fixtures
             </NavTabButton>
           </NuxtLink>
-          <NuxtLink to="/wiki">
+          <!-- <NuxtLink to="/wiki">
             <NavTabButton :active="route.path.startsWith('/wiki')">
-              <template #icon>
-                <div i-emojione-monotone:orange-book></div>
-              </template>
               百科
-              <small>Wiki</small>
-
+            </NavTabButton>
+          </NuxtLink> -->
+          <NuxtLink to="/leagues">
+            <NavTabButton :active="route.path.startsWith('/leagues')">
+              Leagues
             </NavTabButton>
           </NuxtLink>
-          <NuxtLink to="/analysis">
-            <NavTabButton :active="route.path.startsWith('/analysis')">
-              <template #icon>
-                <div i-emojione-monotone:bar-chart></div>
-              </template>
-              分析
-              <small>Analysis</small>
-            </NavTabButton>
-          </NuxtLink>
-          <NuxtLink to="/mine">
+          <!-- <NuxtLink to="/mine">
             <NavTabButton :active="route.path.startsWith('/mine')">
               <template #icon>
                 <div i-emojione-monotone:bust-in-silhouette></div>
@@ -52,8 +39,8 @@ const route = useRoute()
               我的
               <small>Mine</small>
             </NavTabButton>
-          </NuxtLink>
-        </FlexRow> -->
+          </NuxtLink> -->
+        </FlexRow>
 
       </FlexRow>
     </FlexRow>
@@ -63,14 +50,20 @@ const route = useRoute()
 <style lang="postcss">
 .p-nav {
 
-  @apply bg-violet bg-opacity-10 h-20 relative z-1;
+  @apply h-20 relative z-1;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.00) 0%,  rgba(89, 94, 136, 0.50) 34%, rgba(89, 94, 136, 0.50) 35%);
+
 }
 
 .p-nav-container {
-  @apply w-full max-w-7xl;
+  @apply w-full max-w-7xl h-full;
 }
 
 .p-logo img {
+  @apply h-20;
+}
+
+.p-nav-tab {
   @apply h-20;
 }
 </style>

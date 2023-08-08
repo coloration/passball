@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const dbl = (n: number) => n > 9 ? `${n}` : `0${n}`
-const weekdayMap = { 1: 'M', 2: 'T', 3: 'M', 4: 'T', 5: 'F', 6: 'S', 0: 'S' }
+const weekdayMap = { 1: 'M', 2: 'T', 3: 'W', 4: 'T', 5: 'F', 6: 'S', 0: 'S' }
 const weekly = (w: number) => weekdayMap[w as keyof typeof weekdayMap] || '' 
 
 withDefaults(

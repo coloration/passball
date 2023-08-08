@@ -70,7 +70,9 @@ async function changeDay(tab: DateTab) {
         <div class="h-full flex flex-col gap-2">
           <template v-for="(league, type) in leagues">
             <div class="font-700 text-xl">
-              <span v-if="league.country && league.country.toLowerCase() !== 'world'">{{ league.country }} - </span>
+              <span v-if="league.country && league.country.toLowerCase() !== 'world'">
+                {{ league.country }} - 
+              </span>
               {{ league.leagueName }}
             </div>
             <MatchCapsule v-for="match in league.matches" :match="match" :type="type" />

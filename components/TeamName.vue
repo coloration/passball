@@ -12,7 +12,9 @@ const props = withDefaults(
 <template>
   <div class="team-name">
     <!-- -->
-    <img v-if="id" :src="`https://media-1.api-sports.io/football/teams/${id}.png`" />
+    <div class="w-8 h-8 flex items-center">
+      <img v-if="id" :src="`https://media-1.api-sports.io/football/teams/${id}.png`" />
+    </div>
     
     <div class="flex-1 text-truncate"><slot /></div>
   </div>
@@ -24,6 +26,6 @@ const props = withDefaults(
 }
 
 .team-name img {
-  @apply w-8 h-8 opacity-80;
+  @apply w-full opacity-80;
 }
 </style>

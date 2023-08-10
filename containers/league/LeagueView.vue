@@ -6,17 +6,19 @@ import TopScorers from './TopScorers.vue'
 import day from 'dayjs'
 
 interface SeasonMatch {
+  beg: number
+  end: number
+  fixtures: any[]
   lg: number
+  order: number
+  rd: string
   sn: number
-  rounds: any[]
 }
 
 const standings = ref<any[]>([])
 const scorers = ref<any[]>([])
 const assists = ref<any[]>([])
-const seasonMatches = ref<SeasonMatch>({
-  lg: 0, sn: 0, rounds: []
-})
+const rounds = ref<SeasonMatch[]>([])
 
 
 
@@ -36,7 +38,6 @@ const typeCups = computed(() => (leagues.value || []).filter((lg: any) => lg.k =
 
 watch(() => typeLeagues.value, () => {
   const defaultLeague = typeLeagues.value[0]
-  console.log(typeLeagues.value)
   if (defaultLeague) {
     
     currentLeague.value = defaultLeague.lg
@@ -57,8 +58,6 @@ function handleLeagueChange(league: number, season?: number) {
 
   currentSeason.value = season || lg.value.seasons[0].sn
 
-  currentRoundIndex.value = 0
-
   if (lg.value.k === 0) {
     useFetch(`/api/league-season?league=${league}&season=${currentSeason.value}`)
       .then(({ data }) => {
@@ -76,8 +75,21 @@ function handleLeagueChange(league: number, season?: number) {
 
   useFetch(`/api/league-match?league=${league}&season=${currentSeason.value}`)
     .then(({ data: matchData }) => {
-      console.log(matchData)
-      seasonMatches.value = (matchData.value as any) || []
+      rounds.value = (matchData.value as any) || []
+      let index = rounds.value.length
+      const now = Date.now()
+
+      const found = rounds.value.findLast((rd, i) => {
+        if (now > rd.beg) {
+          index = i
+          return true
+        }
+      })
+
+      if (!found) index = 0
+
+      currentRoundIndex.value = index      
+
     })
  
 }
@@ -86,7 +98,7 @@ function handleLeagueChange(league: number, season?: number) {
 function handleRoundChange(offset: number) {
   let changed = currentRoundIndex.value + offset
   if (changed < 0) changed = 0
-  if (changed > 20000) changed = 20000
+  if (changed >= rounds.value.length) changed = rounds.value.length - 1
   currentRoundIndex.value = changed
 }
 
@@ -132,7 +144,7 @@ function handleRoundChange(offset: number) {
           </RoundBoard>
 
           <RoundBoard class="flex-1 min-h-100 px-10 py-8"
-            gradient="linear-gradient(180deg, rgba(50, 54, 148, 0.26) 0%, rgba(50, 54, 148, 0.26) 100%)">
+            gradient="linear-gradient(180deg, rgba(50, 54, 148, 0.7) 0%, rgba(50, 54, 148, 0.26) 100%)">
             
             <div class="flex justify-between">
               <div class="flex gap-4">
@@ -148,17 +160,17 @@ function handleRoundChange(offset: number) {
                   </select>
                 </div>
                 <div class="opacity-70 font-700">
-                  {{  seasonMatches?.rounds?.[currentRoundIndex]?.beg ? day(seasonMatches?.rounds?.[currentRoundIndex]?.beg).format('D MMM.') : '' }} 
-                  {{  seasonMatches?.rounds?.[currentRoundIndex]?.end ? '~ ' + day(seasonMatches?.rounds?.[currentRoundIndex]?.end).format('D MMM. YYYY') : '' }}
+                  {{  rounds?.[currentRoundIndex]?.beg ? day(rounds?.[currentRoundIndex]?.beg).format('D MMM.') : '' }} 
+                  {{  rounds?.[currentRoundIndex]?.end ? '~ ' + day(rounds?.[currentRoundIndex]?.end).format('D MMM. YYYY') : '' }}
                 </div>
               </div>
               <div class="flex gap-4">
-                <div class="uppercase font-700 text-xl">{{ seasonMatches?.rounds?.[currentRoundIndex]?.round }}</div>
+                <div class="uppercase font-700 text-xl">{{ rounds[currentRoundIndex]?.rd }}</div>
                 <div class="flex gap-2">
-                  <GlassButton @click="handleRoundChange(-1)">
+                  <GlassButton @click="handleRoundChange(-1)" :class="{ 'opacity-30': currentRoundIndex === 0 }">
                     <div i-carbon-caret-up></div>
                   </GlassButton>
-                  <GlassButton @click="handleRoundChange(1)">
+                  <GlassButton @click="handleRoundChange(1)" :class="{ 'opacity-30': currentRoundIndex === rounds.length - 1 }">
                     <div i-carbon-caret-down></div>
                   </GlassButton>
                 </div>
@@ -167,7 +179,7 @@ function handleRoundChange(offset: number) {
 
 
             <MatchItem
-              v-for="(fixture, i) in seasonMatches?.rounds?.[currentRoundIndex]?.fixtures"
+              v-for="(fixture, i) in rounds[currentRoundIndex]?.fixtures"
               :key="i" :match="fixture" :kind="lg?.k" />
 
           </RoundBoard>

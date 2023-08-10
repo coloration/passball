@@ -9,15 +9,20 @@ export default defineEventHandler(async (event) => {
   try {
     await client.connect()
     const database = client.db(MONGODB_DATABASE)
-    const collection = database.collection('league-matches')
-    const results = await collection.findOne({
+    // const collection = database.collection('league-matches')
+    // const results = await collection.findOne({
+    //   lg: Number(league),
+    //   sn: Number(season)
+    // })
+    const collection = database.collection('league-rounds')
+    const results = await collection.find({
       lg: Number(league),
-      sn: Number(season)
-    })
+      sn: Number(season),
+    }).toArray()
 
     // const leagueMap = (await GlobalCache.instance.getStaticContents())[0].data
 
- 
+    
     return results
   }
   catch (e: any) {

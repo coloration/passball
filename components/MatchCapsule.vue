@@ -22,6 +22,8 @@ const offset = computed(() => {
 
   return ((h + m) / 30 * 100).toFixed(2) + '%'
 })
+
+const isOver = computed(() => ['FT', 'AET', 'PEN'].includes(props.match?.st))
 </script>
 
 <template>
@@ -35,7 +37,13 @@ const offset = computed(() => {
     <div class="teams">
       <div class="team" :style="{ backgroundImage: `url(https://media-1.api-sports.io/football/teams/${match.h}.png)` }">
       </div>
-      <div class="team-score" v-if="match.st === 'FT'">{{ match.hg?.[0] }}:{{ match.ag?.[0] }}</div>
+      <div class="team-score" v-if="isOver">
+        {{ match.hg?.[0] }}
+        <small class="font-500 absolute -left-1.5 -bottom-4" v-if="match.st === 'PEN'">({{ match.hg?.[4] }})</small>
+        :
+        <small class="font-500 absolute -right-1.5 -bottom-4" v-if="match.st === 'PEN'">({{ match.ag?.[4] }})</small>
+        {{ match.ag?.[0] }}
+      </div>
       <div class="team-score" v-else>VS</div>
 
       <div class="team" :style="{ backgroundImage: `url(https://media-1.api-sports.io/football/teams/${match.a}.png)` }">
@@ -73,7 +81,7 @@ const offset = computed(() => {
 
 
 .match-capsule .team-score {
-  @apply text-base font-700;
+  @apply text-base font-700 text-nowrap relative;
 }
 .match-capsule .info {
   @apply absolute z-1 left-0 h-full rounded-full pl-45 pr-6 inline-flex flex-col justify-center gap-1;

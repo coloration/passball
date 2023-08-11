@@ -36,7 +36,7 @@ const dateFormatted = computed(() => props.match.dt ? day(props.match.dt).format
     </div>
     <div class="match-info flex flex-col justify-between items-end text-xs text-gray-400">
       <div class="font-700 text-base text-white">{{ match.st }}</div>
-      <div>{{ match.ve || '-' }}, {{ match.ct || '-' }}</div>
+      <div class="text-right">{{ match.ve || '-' }} <br /> {{ match.ct || '-' }}</div>
       <div>{{ dateFormatted }}</div>
     </div>
   </div>

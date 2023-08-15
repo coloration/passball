@@ -22,6 +22,7 @@ export default defineEventHandler(async (event) => {
 
     // const leagueMap = (await GlobalCache.instance.getStaticContents())[0].data
 
+    results.sort((a, b) => a.order - b.order)
     
     return results
   }

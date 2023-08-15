@@ -10,7 +10,7 @@ export default defineEventHandler(async () => {
     const database = client.db(MONGODB_DATABASE)
     const collection = database.collection('primary-leagues')
 
-    return await collection.find({}).limit(10).toArray()
+    return await collection.find({}).toArray()
   }
   catch (e: any) {
     return { statusCode: 500, body: e.toString() }

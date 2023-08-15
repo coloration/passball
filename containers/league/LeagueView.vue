@@ -167,20 +167,29 @@ function handleRoundChange(offset: number) {
               <div class="flex gap-4">
                 <div class="uppercase font-700 text-xl">{{ rounds[currentRoundIndex]?.rd }}</div>
                 <div class="flex gap-2">
-                  <GlassButton @click="handleRoundChange(-1)" :class="{ 'opacity-30': currentRoundIndex === 0 }">
+                  <GlassButton
+                    @click="handleRoundChange(-1)"
+                    :class="{ 'opacity-30': currentRoundIndex === 0 }"
+                  >
                     <div i-carbon-caret-up></div>
                   </GlassButton>
-                  <GlassButton @click="handleRoundChange(1)" :class="{ 'opacity-30': currentRoundIndex === rounds.length - 1 }">
+                  <GlassButton
+                    @click="handleRoundChange(1)"
+                    :class="{ 'opacity-30': currentRoundIndex === rounds.length - 1 }"
+                  >
                     <div i-carbon-caret-down></div>
                   </GlassButton>
                 </div>
               </div>
             </div>
 
-
+            
             <MatchItem
               v-for="(fixture, i) in rounds[currentRoundIndex]?.fixtures"
-              :key="i" :match="fixture" :kind="lg?.k" />
+              :key="i"
+              :match="fixture"
+              :kind="lg?.k"
+            />
 
           </RoundBoard>
         </div>

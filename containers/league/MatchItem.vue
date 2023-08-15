@@ -3,7 +3,7 @@ import day from 'dayjs'
 const props = withDefaults(
   defineProps<{
     match: any,
-    kind: 0 | 1
+    kind: 0 | 1,
   }>(),
   {
     match: () => ({} as any),

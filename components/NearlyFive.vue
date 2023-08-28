@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 const props = withDefaults(
   defineProps<{
-    content: string
+    content?: string
   }>(),
   {
-    content: 'DDDDD'
+    content: ''
   }
 )
 

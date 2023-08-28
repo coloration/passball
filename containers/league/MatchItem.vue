@@ -23,7 +23,7 @@ const dateFormatted = computed(() => props.match.dt ? day(props.match.dt).format
           {{ match.hg?.[0] }}
           <small v-if="match.st === 'PEN'">({{ match.hg?.[4] }})</small>
         </div>
-        <NearlyFive v-if="kind === 0" :content="match.hfm || ''" />
+        <NearlyFive v-if="kind === 0" :content="match.hfm" />
       </div>
       <div class="team flex items-center">
         <TeamName :id="match.a" class="w-60">{{ match.an }}</TeamName>
@@ -31,7 +31,7 @@ const dateFormatted = computed(() => props.match.dt ? day(props.match.dt).format
           {{ match.ag?.[0] }}
           <small v-if="match.st === 'PEN'">({{ match.ag?.[4] }})</small>
         </div>
-        <NearlyFive v-if="kind === 0" :content="match.afm || ''" />
+        <NearlyFive v-if="kind === 0" :content="match.afm" />
       </div>
     </div>
     <div class="match-info flex flex-col justify-between items-end text-xs text-gray-400">

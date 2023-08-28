@@ -19,12 +19,12 @@ const dateFormatted = computed(() => props.match.dt ? day(props.match.dt).format
       <div class="team flex items-center">
         <TeamName :id="match.h" class="w-60">{{ match.hn }}</TeamName>
         <div class="text-xl font-700 w-4 text-center mr-4">{{ match.hg?.[0] }}</div>
-        <NearlyFive v-if="kind === 0" :content="match.hfm || ''" />
+        <NearlyFive v-if="kind === 0" :content="match.hfm" />
       </div>
       <div class="team flex items-center">
         <TeamName :id="match.a" class="w-60">{{ match.an }}</TeamName>
         <div class="text-xl font-700 w-4 text-center mr-4">{{ match.ag?.[0] }}</div>
-        <NearlyFive v-if="kind === 0" :content="match.afm || ''" />
+        <NearlyFive v-if="kind === 0" :content="match.afm" />
       </div>
     </div>
     <div class="match-info flex flex-col justify-between items-end text-xs text-gray-400">
